@@ -6,8 +6,9 @@ dist: xenial
 
 language: python
 
+# Download some take data and place in a ~/Documents/Motion folder.
 before_script:
-  - wget https://storage.googleapis.com/motionshadow/shadow-fileio-bob-testdata.zip
-  - unzip shadow-fileio-bob-testdata.zip
+  - wget https://storage.googleapis.com/motionshadow/shadow-fileio-bob-testdata.zip -O /tmp/testdata.zip
+  - unzip /tmp/testdata.zip -d ~/
 
 script: python -m unittest
