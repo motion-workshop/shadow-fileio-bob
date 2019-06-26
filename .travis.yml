@@ -1,0 +1,13 @@
+#
+# @file  .travis.yml
+# @brief Travis CI config file. Build and run unit tests on Linux.
+#
+dist: xenial
+
+language: python
+
+before_script:
+  - wget https://storage.googleapis.com/motionshadow/shadow-fileio-bob-testdata.zip
+  - unzip shadow-fileio-bob-testdata.zip
+
+script: python -m unittest
