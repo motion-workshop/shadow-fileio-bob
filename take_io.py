@@ -212,7 +212,7 @@ def make_node_map(filename, node_list):
     return node_map
 
 
-def find_newest_take():
+def find_newest_take(name=None):
     """Search the Motion user data folder for the most recently recorded take
     path.
 
@@ -221,35 +221,38 @@ def find_newest_take():
     """
     prefix = os.path.expanduser('~/Documents/Motion/take')
 
-    #
-    # Search for the newest date in the take/YYYY-MM-DD folders.
-    #
-    date = ''
-    with os.scandir(prefix) as it:
-        for entry in it:
-            if not entry.is_dir():
-                continue
-            if not re.search(r'\d{4}\-\d{2}\-\d{2}', entry.name):
-                continue
-            if entry.name > date:
-                date = entry.name
+    if name is None:
+        #
+        # Search for the newest date in the take/YYYY-MM-DD folders.
+        #
+        date = ''
+        with os.scandir(prefix) as it:
+            for entry in it:
+                if not entry.is_dir():
+                    continue
+                if not re.search(r'\d{4}\-\d{2}\-\d{2}', entry.name):
+                    continue
+                if entry.name > date:
+                    date = entry.name
 
-    prefix = os.path.join(prefix, date)
+        prefix = os.path.join(prefix, date)
 
-    #
-    # Search for the largest take number in the take/YYYY-MM-DD/nnnn folders.
-    #
-    number = ''
-    with os.scandir(prefix) as it:
-        for entry in it:
-            if not entry.is_dir():
-                continue
-            if not re.search(r'\d{4}', entry.name):
-                continue
-            if entry.name > number:
-                number = entry.name
+        #
+        # Search for the largest take number in the take/YYYY-MM-DD/nnnn folders.
+        #
+        number = ''
+        with os.scandir(prefix) as it:
+            for entry in it:
+                if not entry.is_dir():
+                    continue
+                if not re.search(r'\d{4}', entry.name):
+                    continue
+                if entry.name > number:
+                    number = entry.name
 
-    prefix = os.path.join(prefix, number)
+        prefix = os.path.join(prefix, number)
+    else:
+        prefix = os.path.join(prefix, name)
 
     return str(os.path.normpath(prefix))
 
