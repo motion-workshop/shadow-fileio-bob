@@ -1,3 +1,4 @@
+git+git://github.com/motion-workshop/shadow-fileio-python.git
 numba
 numpy
 numpy-quaternion

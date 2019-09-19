@@ -1,5 +1,6 @@
 import utility
-import take_io
+
+import shadow.fileio
 
 import logging
 import numpy as np
@@ -39,7 +40,8 @@ def take_to_bob_text(prefix):
     logger.info('loading take from "{prefix}": {delta:.4f}'.format(
         prefix=prefix, delta=timer.elapsed()))
 
-    info, node_list, data = take_io.read('{}/data.mStream'.format(prefix))
+    with open('{}/data.mStream'.format(prefix), 'rb') as f:
+        info, node_list, data = shadow.fileio.read_stream(f)
 
     logger.info('read take stream: {delta:.4f}'.format(delta=timer.elapsed()))
 
@@ -53,7 +55,8 @@ def take_to_bob_text(prefix):
     # Which can be used to index into the big array of data loaded from the
     # take.
     #
-    node_map = take_io.make_node_map('{}/take.mTake'.format(prefix), node_list)
+    with open('{}/take.mTake'.format(prefix)) as f:
+        node_map = shadow.fileio.make_node_map(f, node_list)
 
     logger.info('create named data base and bounds: {delta:.4f}'.format(
         delta=timer.elapsed()))
@@ -189,7 +192,7 @@ def take_to_bob_text(prefix):
 
 
 def main(path=None):
-    path = take_io.find_newest_take(path)
+    path = shadow.fileio.find_newest_take(path)
 
     take_to_bob_text(path)
 
